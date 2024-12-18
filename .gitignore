@@ -54,3 +54,5 @@ pnpm-lock.yaml
 
 # TypeScript cache
 *.tsbuildinfo
+
+personal.md
