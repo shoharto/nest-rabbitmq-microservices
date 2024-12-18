@@ -1,0 +1,21 @@
+{
+  "name": "nest-rabbitmq-microservices",
+  "private": true,
+  "workspaces": [
+    "order-microservice",
+    "processing-microservice",
+    "libs/*"
+  ],
+  "scripts": {
+    "clean": "npm run clean:common && npm run clean:order && npm run clean:processing",
+    "clean:common": "cd libs/common && rm -rf dist",
+    "clean:order": "cd order-microservice && rm -rf dist",
+    "clean:processing": "cd processing-microservice && rm -rf dist",
+    "build:common": "cd libs/common && npm run build",
+    "build:order": "cd order-microservice && npm run build",
+    "build:processing": "cd processing-microservice && npm run build",
+    "build": "npm run clean && npm run build:common && npm run build:order && npm run build:processing",
+    "start:dev:order": "cd order-microservice && npm run start:dev",
+    "start:dev:processing": "cd processing-microservice && npm run start:dev"
+  }
+} 
