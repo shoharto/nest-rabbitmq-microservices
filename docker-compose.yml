@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  order-service:
+    build:
+      context: .
+      dockerfile: order-microservice/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - RABBITMQ_QUEUE=orders_queue
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  processing-service:
+    build:
+      context: .
+      dockerfile: processing-microservice/Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - RABBITMQ_QUEUE=orders_queue
+    depends_on:
+      rabbitmq:
+        condition: service_healthy 
