@@ -8,62 +8,16 @@ Our e-commerce platform needs a scalable order processing system that can:
 - Ensure reliable order processing even during system failures
 
 ## 2. Use Case Diagram
-```mermaid
-graph LR
-    Customer[Customer] --> |Places Order| OrderService[Order Service]
-    OrderService --> |Publishes Event| RabbitMQ[Message Queue]
-    RabbitMQ --> |Consumes Event| ProcessingService[Processing Service]
-    ProcessingService --> |Updates Status| DB[(Order Status)]
-```
+<img width="1502" alt="Screenshot 2024-12-19 at 17 11 12" src="https://github.com/user-attachments/assets/87d7bdf1-a49d-40d1-bdcf-f5ef83a8bf2d" />
+
 
 ## 3. System Architecture
-```mermaid
-graph TD
-    subgraph Client Layer
-        Client[API Client]
-    end
-    
-    subgraph Order Service
-        API[REST API]
-        OrderHandler[Order Handler]
-        Publisher[Event Publisher]
-    end
-    
-    subgraph Message Broker
-        RabbitMQ[RabbitMQ]
-    end
-    
-    subgraph Processing Service
-        Consumer[Event Consumer]
-        Processor[Order Processor]
-        StatusManager[Status Manager]
-    end
+<img width="1503" alt="Screenshot 2024-12-19 at 17 14 04" src="https://github.com/user-attachments/assets/35604532-f21b-4873-8220-0feae074a098" />
 
-    Client --> API
-    API --> OrderHandler
-    OrderHandler --> Publisher
-    Publisher --> RabbitMQ
-    RabbitMQ --> Consumer
-    Consumer --> Processor
-    Processor --> StatusManager
-```
 
 ## 4. Sequence Diagram
-```mermaid
-sequenceDiagram
-    participant C as Client
-    participant O as Order Service
-    participant R as RabbitMQ
-    participant P as Processing Service
+<img width="1232" alt="Screenshot 2024-12-19 at 17 15 05" src="https://github.com/user-attachments/assets/9f614d33-484b-4975-9fab-711b7d93b512" />
 
-    C->>O: POST /orders
-    O->>O: Validate Order
-    O->>R: Publish order_created event
-    O->>C: 201 Created
-    R->>P: Consume order_created event
-    P->>P: Process Order
-    P->>P: Update Status
-```
 
 ## 5. Technical Stack
 - **Backend Framework**: NestJS
